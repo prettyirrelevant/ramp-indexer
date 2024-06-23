@@ -1,5 +1,5 @@
 {
-  "name": "ramp.fun-indexer",
+  "name": "ramp-fun-indexer",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ponder/core": "^0.4.38",
+    "nanoid": "^5.0.7",
     "viem": "^1.19.3"
   },
   "devDependencies": {

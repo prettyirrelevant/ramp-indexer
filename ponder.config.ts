@@ -1,21 +1,26 @@
 import { createConfig } from "@ponder/core";
-import { http } from "viem";
+import { http, zeroAddress } from "viem";
 
-import { ExampleContractAbi } from "./abis/ExampleContractAbi";
+import { RampBondingCurveAbi } from "./abis/RampBondingCurveAMM";
 
 export default createConfig({
   networks: {
-    mainnet: {
-      chainId: 1,
-      transport: http(process.env.PONDER_RPC_URL_1),
+    fraxtalTestnet: {
+      chainId: 2522,
+      transport: http("https://rpc.testnet.frax.com"),
+    },
+    fraxtal: {
+      chainId: 252,
+      transport: http("https://rpc.frax.com"),
     },
   },
   contracts: {
-    ExampleContract: {
-      network: "mainnet",
-      abi: ExampleContractAbi,
-      address: "0x0",
-      startBlock: 1234567,
+    RampCurve: {
+      network: {
+        fraxtal: { address: zeroAddress },
+        fraxtalTestnet: { address: zeroAddress },
+      },
+      abi: RampBondingCurveAbi,
     },
   },
 });
