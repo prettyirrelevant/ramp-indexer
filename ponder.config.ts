@@ -1,5 +1,5 @@
 import { createConfig } from "@ponder/core";
-import { http, zeroAddress } from "viem";
+import { http } from "viem";
 
 import { RampBondingCurveAbi } from "./abis/RampBondingCurveAMM";
 
@@ -16,9 +16,10 @@ export default createConfig({
   },
   contracts: {
     RampCurve: {
+      address: "0xD62BfbF2050e8fEAD90e32558329D43A6efce4C8" as `0x${string}`,
       network: {
-        fraxtal: { address: zeroAddress },
-        fraxtalTestnet: { address: zeroAddress },
+        // fraxtal: { startBlock: 6271421 },
+        fraxtalTestnet: { startBlock: 9666828 },
       },
       abi: RampBondingCurveAbi,
     },

@@ -26,6 +26,7 @@ export default createSchema((p) => ({
   Trade: p.createTable({
     id: p.string(),
     fee: p.bigint(),
+    chainId: p.int(),
     actor: p.string(),
     amountIn: p.bigint(),
     timestamp: p.bigint(),
@@ -37,12 +38,19 @@ export default createSchema((p) => ({
   Price: p.createTable({
     id: p.int(), // Unix timestamp of the start of the hour.
     low: p.bigint(),
-    count: p.int(),
     open: p.bigint(),
+    chainId: p.int(),
     high: p.bigint(),
     close: p.bigint(),
-    average: p.float(),
+    count: p.bigint(),
+    average: p.bigint(),
     token: p.one("tokenId"),
     tokenId: p.string().references("Token.id"),
+  }),
+  VerifiedToken: p.createTable({
+    id: p.string(),
+    timestamp: p.bigint(),
+    isVerified: p.string(),
+    etherscanGuid: p.string(),
   }),
 }));
