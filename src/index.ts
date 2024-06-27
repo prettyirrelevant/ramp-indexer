@@ -1,30 +1,18 @@
 import { ponder } from "@/generated";
-import { newId, verifyTokenContract } from "./utils";
+import { newId } from "./utils";
+import { sha256 } from "viem";
 
 ponder.on("RampCurve:TokenLaunch", async ({ event, context }) => {
   const { Token } = context.db;
-  try {
-    await verifyTokenContract({
-      factoryAddress: context.contracts.RampCurve.address,
-      supply: 1000000000000000000000000000n,
-      chain: context.network.chainId,
-      creator: event.args.creator,
-      address: event.args.token,
-      symbol: event.args.symbol,
-      name: event.args.name,
-    });
-  } catch (e) {
-    console.log("Unable to verify token contract due to:");
-    console.error(e);
-  }
 
   await Token.create({
-    id: event.args.token,
+    id: sha256(`${event.args.token}-${context.network.chainId}`),
     data: {
       isMigrated: false,
       name: event.args.name,
       symbol: event.args.symbol,
       logoUrl: event.args.image,
+      address: event.args.token,
       creator: event.args.creator,
       websiteLink: event.args.website,
       timestamp: event.block.timestamp,
@@ -53,8 +41,8 @@ ponder.on("RampCurve:PriceUpdate", async ({ event, context }) => {
       open: event.args.price,
       close: event.args.price,
       average: event.args.price,
-      tokenId: event.args.token,
       chainId: context.network.chainId,
+      tokenId: sha256(`${event.args.token}-${context.network.chainId}`),
     },
     update: ({ current }) => ({
       close: event.args.price,
@@ -68,8 +56,8 @@ ponder.on("RampCurve:PriceUpdate", async ({ event, context }) => {
   });
 
   await Token.update({
-    id: event.args.token,
     data: { marketCap: event.args.mcapEth },
+    id: sha256(`${event.args.token}-${context.network.chainId}`),
   });
 });
 
@@ -81,12 +69,12 @@ ponder.on("RampCurve:Trade", async ({ event, context }) => {
     data: {
       fee: event.args.fee,
       actor: event.args.trader,
-      tokenId: event.args.token,
       amountIn: event.args.amountIn,
       amountOut: event.args.amountOut,
       timestamp: event.args.timestamp,
       chainId: context.network.chainId,
       action: event.args.isBuy ? "BUY" : "SELL",
+      tokenId: sha256(`${event.args.token}-${context.network.chainId}`),
     },
   });
 });
@@ -95,7 +83,7 @@ ponder.on("RampCurve:MigrateLiquidity", async ({ event, context }) => {
   const { Token } = context.db;
 
   await Token.update({
-    id: event.args.token,
+    id: sha256(`${event.args.token}-${context.network.chainId}`),
     data: { lpAddress: event.args.pair, isMigrated: true },
   });
 });

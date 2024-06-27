@@ -8,6 +8,7 @@ export default createSchema((p) => ({
       name: p.string(),
       symbol: p.string(),
       logoUrl: p.string(),
+      address: p.string(),
       creator: p.string(),
       timestamp: p.bigint(),
       isMigrated: p.boolean(),
@@ -46,11 +47,5 @@ export default createSchema((p) => ({
     average: p.bigint(),
     token: p.one("tokenId"),
     tokenId: p.string().references("Token.id"),
-  }),
-  VerifiedToken: p.createTable({
-    id: p.string(),
-    timestamp: p.bigint(),
-    isVerified: p.string(),
-    etherscanGuid: p.string(),
   }),
 }));

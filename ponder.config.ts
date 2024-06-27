@@ -18,7 +18,7 @@ export default createConfig({
     RampCurve: {
       address: "0xD62BfbF2050e8fEAD90e32558329D43A6efce4C8" as `0x${string}`,
       network: {
-        // fraxtal: { startBlock: 6271421 },
+        fraxtal: { startBlock: 6271421 },
         fraxtalTestnet: { startBlock: 9666828 },
       },
       abi: RampBondingCurveAbi,
