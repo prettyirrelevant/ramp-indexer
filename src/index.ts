@@ -1,12 +1,11 @@
 import { ponder } from "@/generated";
-import { newId } from "./utils";
 import { sha256 } from "viem";
 
 ponder.on("RampCurve:TokenLaunch", async ({ event, context }) => {
   const { Token } = context.db;
 
   await Token.create({
-    id: sha256(`${event.args.token}-${context.network.chainId}`),
+    id: sha256(`${event.args.token}:${context.network.chainId}`),
     data: {
       isMigrated: false,
       name: event.args.name,
@@ -42,7 +41,7 @@ ponder.on("RampCurve:PriceUpdate", async ({ event, context }) => {
       close: event.args.price,
       average: event.args.price,
       chainId: context.network.chainId,
-      tokenId: sha256(`${event.args.token}-${context.network.chainId}`),
+      tokenId: sha256(`${event.args.token}:${context.network.chainId}`),
     },
     update: ({ current }) => ({
       close: event.args.price,
@@ -57,7 +56,7 @@ ponder.on("RampCurve:PriceUpdate", async ({ event, context }) => {
 
   await Token.update({
     data: { marketCap: event.args.mcapEth },
-    id: sha256(`${event.args.token}-${context.network.chainId}`),
+    id: sha256(`${event.args.token}:${context.network.chainId}`),
   });
 });
 
@@ -65,7 +64,9 @@ ponder.on("RampCurve:Trade", async ({ event, context }) => {
   const { Trade } = context.db;
 
   await Trade.create({
-    id: newId("trade"),
+    id: sha256(
+      `${event.transaction.hash}:${event.log.logIndex}:${context.network.chainId}:${event.block.timestamp}`,
+    ),
     data: {
       fee: event.args.fee,
       actor: event.args.trader,
@@ -74,7 +75,7 @@ ponder.on("RampCurve:Trade", async ({ event, context }) => {
       timestamp: event.args.timestamp,
       chainId: context.network.chainId,
       action: event.args.isBuy ? "BUY" : "SELL",
-      tokenId: sha256(`${event.args.token}-${context.network.chainId}`),
+      tokenId: sha256(`${event.args.token}:${context.network.chainId}`),
     },
   });
 });

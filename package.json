@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@ponder/core": "^0.4.38",
-    "nanoid": "^5.0.7",
     "viem": "^1.19.3"
   },
   "devDependencies": {
