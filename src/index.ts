@@ -84,7 +84,7 @@ ponder.on("RampCurve:MigrateLiquidity", async ({ event, context }) => {
   const { Token } = context.db;
 
   await Token.update({
-    id: sha256(`${event.args.token}-${context.network.chainId}`),
+    id: sha256(`${event.args.token}:${context.network.chainId}`),
     data: { lpAddress: event.args.pair, isMigrated: true },
   });
 });
