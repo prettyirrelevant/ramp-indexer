@@ -2,7 +2,6 @@ import { createConfig } from "@ponder/core";
 import { http } from "viem";
 
 import { RampBondingCurveAbi } from "./abis/RampBondingCurveAMM";
-import { baseSepolia } from "viem/chains";
 
 export default createConfig({
   networks: {
